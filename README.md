@@ -1,1 +1,128 @@
-# forDaniAstri
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hey Nia!</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Helvetica Neue', sans-serif;
+      background: #f5f5f5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      flex-direction: column;
+      color: #333;
+    }
+    h1 {
+      font-size: 3em;
+      margin-bottom: 0.2em;
+    }
+    p {
+      font-size: 1.5em;
+      margin-bottom: 1.5em;
+      text-align: center;
+      max-width: 80%;
+    }
+    .buttons {
+      display: flex;
+      gap: 1em;
+    }
+    button {
+      padding: 0.8em 1.5em;
+      font-size: 1em;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .yes {
+      background-color: #4CAF50;
+      color: white;
+    }
+    .no {
+      background-color: #e74c3c;
+      color: white;
+      position: relative;
+    }
+    .hidden {
+      display: none;
+    }
+    .info {
+      margin-top: 2em;
+      font-size: 1.2em;
+      background: white;
+      padding: 1em 2em;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    iframe {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <h1>HAII NIAA</h1>
+  <p>So... I was thinking, maybe we could go on our very first date? 💛</p>
+  <div class="buttons">
+    <button class="yes" onclick="showDetailsAndPlay()">Yes</button>
+    <button class="no" onclick="moveNo(this)">No</button>
+  </div>
+  <div id="info" class="info hidden">
+    Yay! Let's meet on <strong>Saturday, May 11th</strong> at <strong>5:00 PM</strong>.<br/>
+    Location: <strong>That cozy little café you love, Kopi Nako Renon ☕</strong>
+  </div>
+
+  <!-- YouTube player -->
+  <div id="player"></div>
+
+  <script>
+    function showDetailsAndPlay() {
+      document.getElementById('info').classList.remove('hidden');
+      if (player) {
+        player.playVideo();
+      }
+    }
+
+    function moveNo(btn) {
+      const maxX = window.innerWidth - btn.offsetWidth;
+      const maxY = window.innerHeight - btn.offsetHeight;
+      const randX = Math.floor(Math.random() * maxX);
+      const randY = Math.floor(Math.random() * maxY);
+
+      btn.style.position = 'absolute';
+      btn.style.left = randX + 'px';
+      btn.style.top = randY + 'px';
+    }
+
+    // Load YouTube IFrame Player API
+    var tag = document.createElement('script');
+    tag.src = "https://www.youtube.com/iframe_api";
+    var firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+    var player;
+    function onYouTubeIframeAPIReady() {
+      player = new YT.Player('player', {
+        height: '0',
+        width: '0',
+        videoId: 'Lb6JEV8lT9c',
+        playerVars: {
+          'autoplay': 0,
+          'controls': 0,
+          'loop': 1,
+          'playlist': 'Lb6JEV8lT9c'
+        },
+        events: {
+          'onReady': function (event) {
+            // ready to play
+          }
+        }
+      });
+    }
+  </script>
+</body>
+</html>
