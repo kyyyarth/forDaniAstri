@@ -3,125 +3,168 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Hey Nia!</title>
+  <title>A Little Surprise</title>
   <style>
-    body {
+    * {
+      box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: 'Helvetica Neue', sans-serif;
-      background: #f5f5f5;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background: linear-gradient(to bottom right, #e0eafc, #cfdef3);
+      color: #333;
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
-      flex-direction: column;
-      color: #333;
+      transition: background 0.6s;
+      overflow: hidden;
     }
-    h1 {
-      font-size: 3em;
-      margin-bottom: 0.2em;
-    }
-    p {
-      font-size: 1.5em;
-      margin-bottom: 1.5em;
+
+    .container {
       text-align: center;
-      max-width: 80%;
+      padding: 2rem;
+      border-radius: 1rem;
+      background: rgba(255, 255, 255, 0.9);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+      width: 90%;
+      max-width: 400px;
+      position: relative;
+      z-index: 2;
     }
-    .buttons {
-      display: flex;
-      gap: 1em;
+
+    h1, h2, p {
+      margin-bottom: 1rem;
     }
+
     button {
-      padding: 0.8em 1.5em;
-      font-size: 1em;
+      padding: 0.6rem 1.2rem;
       border: none;
-      border-radius: 8px;
+      border-radius: 999px;
+      background-color: #4f46e5;
+      color: #fff;
+      font-size: 1rem;
       cursor: pointer;
       transition: background 0.3s;
     }
-    .yes {
-      background-color: #4CAF50;
-      color: white;
+
+    button:hover {
+      background-color: #4338ca;
     }
-    .no {
-      background-color: #e74c3c;
-      color: white;
-      position: relative;
-    }
+
     .hidden {
       display: none;
     }
-    .info {
-      margin-top: 2em;
-      font-size: 1.2em;
-      background: white;
-      padding: 1em 2em;
-      border-radius: 12px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+
+    .options button {
+      margin: 0.5rem;
     }
-    iframe {
+
+    #noBtn {
+      position: relative;
+    }
+
+    audio {
       display: none;
+    }
+
+    .balloon {
+      position: absolute;
+      width: 40px;
+      height: 60px;
+      background: pink;
+      border-radius: 50% 50% 45% 45%;
+      animation: float 6s ease-in infinite;
+      opacity: 0.8;
+      z-index: 1;
+    }
+
+    @keyframes float {
+      0% {
+        transform: translateY(100vh) rotate(0deg);
+        opacity: 0;
+      }
+      50% {
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-100vh) rotate(360deg);
+        opacity: 0;
+      }
     }
   </style>
 </head>
 <body>
-  <h1>HAII NIAA</h1>
-  <p>So... I was thinking, maybe we could go on our very first date? 💛</p>
-  <div class="buttons">
-    <button class="yes" onclick="showDetailsAndPlay()">Yes</button>
-    <button class="no" onclick="moveNo(this)">No</button>
-  </div>
-  <div id="info" class="info hidden">
-    Yay! Let's meet on <strong>Saturday, May 11th</strong> at <strong>5:00 PM</strong>.<br/>
-    Location: <strong>That cozy little café you love, Kopi Nako Renon ☕</strong>
+  <audio autoplay loop>
+    <source src="kereta-kencan-hivi.mp3" type="audio/mpeg">
+
+  </audio>
+
+  <div class="container" id="startPage">
+    <h1>Ready to know something?</h1>
+    <button onclick="showInvite()">Ready</button>
   </div>
 
-  <!-- YouTube player -->
-  <div id="player"></div>
+  <div class="container hidden" id="invitePage">
+    <h2>HAII NIAA</h2>
+    <p>So, would you wanna go on our first date with me?</p>
+    <div class="options">
+      <button onclick="showDetails()">Yes</button>
+      <button id="noBtn" onmouseover="moveNoBtn()">No</button>
+    </div>
+  </div>
+
+  <div class="container hidden" id="detailsPage">
+    <h2>Yayy 🎉</h2>
+    <p>📅 Friday this week</p>
+    <p>🕒 03.00 PM</p>
+    <p>📍 Nuanu City</p>
+    <p style="margin-top: 1.5rem; font-style: italic;">I'll pick you up. See ya! 🚗</p>
+  </div>
 
   <script>
-    function showDetailsAndPlay() {
-      document.getElementById('info').classList.remove('hidden');
-      if (player) {
-        player.playVideo();
+    const startPage = document.getElementById("startPage");
+    const invitePage = document.getElementById("invitePage");
+    const detailsPage = document.getElementById("detailsPage");
+    const noBtn = document.getElementById("noBtn");
+
+    function showInvite() {
+      startPage.classList.add("hidden");
+      invitePage.classList.remove("hidden");
+    }
+
+    function showDetails() {
+      invitePage.classList.add("hidden");
+      detailsPage.classList.remove("hidden");
+      launchBalloons();
+    }
+
+    function moveNoBtn() {
+      const container = invitePage;
+      const maxX = container.clientWidth - noBtn.offsetWidth;
+      const maxY = container.clientHeight - noBtn.offsetHeight;
+      const randomX = Math.floor(Math.random() * maxX);
+      const randomY = Math.floor(Math.random() * maxY);
+      noBtn.style.position = "absolute";
+      noBtn.style.left = `${randomX}px`;
+      noBtn.style.top = `${randomY}px`;
+    }
+
+    function launchBalloons() {
+      for (let i = 0; i < 30; i++) {
+        const balloon = document.createElement('div');
+        balloon.classList.add('balloon');
+        balloon.style.left = Math.random() * 100 + 'vw';
+        balloon.style.background = `hsl(${Math.random() * 360}, 70%, 80%)`;
+        balloon.style.animationDuration = 4 + Math.random() * 4 + 's';
+        document.body.appendChild(balloon);
+
+        setTimeout(() => {
+          balloon.remove();
+        }, 8000);
       }
-    }
-
-    function moveNo(btn) {
-      const maxX = window.innerWidth - btn.offsetWidth;
-      const maxY = window.innerHeight - btn.offsetHeight;
-      const randX = Math.floor(Math.random() * maxX);
-      const randY = Math.floor(Math.random() * maxY);
-
-      btn.style.position = 'absolute';
-      btn.style.left = randX + 'px';
-      btn.style.top = randY + 'px';
-    }
-
-    // Load YouTube IFrame Player API
-    var tag = document.createElement('script');
-    tag.src = "https://www.youtube.com/iframe_api";
-    var firstScriptTag = document.getElementsByTagName('script')[0];
-    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-
-    var player;
-    function onYouTubeIframeAPIReady() {
-      player = new YT.Player('player', {
-        height: '0',
-        width: '0',
-        videoId: 'Lb6JEV8lT9c',
-        playerVars: {
-          'autoplay': 0,
-          'controls': 0,
-          'loop': 1,
-          'playlist': 'Lb6JEV8lT9c'
-        },
-        events: {
-          'onReady': function (event) {
-            // ready to play
-          }
-        }
-      });
     }
   </script>
 </body>
